@@ -7,7 +7,7 @@
 
 @section('content')
 <div class="container h-100 ">
-    <h1 class="text-center my-5">Edit {{$project->name}} Project</h1>
+    <h1 class="text-center my-5">Edit <strong class="">{{$project->name}}</strong> Project</h1>
     <div class="row d-flex">
         @if($errors->any())
         <div class="alert alert-danger" role="alert">
@@ -58,8 +58,12 @@
                 <textarea class="form-control" name="summary" id="summary" rows="3">{{old('summary',$project->summary)}}
                 </textarea>
 
-            <button type="submit" class="btn btn-primary mb-5">Invia</button>
+            <div class="buttons my-5">
+                <button type="submit" class="btn btn-success mb-0 w-100">Send Edit</button>
+                <a class="btn btn-warning w-100 mt-2" href="{{ route('admin.projects.index') }}">Discard Edit</a>
+            </div>
         </form>
+        @include('admin.partials.delete-form')
     </div>
 </div>
 @endsection

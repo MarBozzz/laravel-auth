@@ -15,7 +15,9 @@
         <p class="card-text py-3">Summary{{$project->summary}}</p>
         </div>
     </div>
-    <a class="btn btn-primary" href="{{route('admin.projects.index')}}" >TORNA A PROJECTS</a>
+    <a class="btn btn-warning mb-2" href="{{ route('admin.projects.edit', $project) }}">Edit this Project</a>
+    @include('admin.partials.delete-form')
+    <a class="btn btn-primary my-5" href="{{route('admin.projects.index')}}" >TORNA A PROJECTS</a>
 
 </div>
 @endsection
