@@ -8,12 +8,17 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ config('app.name', 'Laravel') }}</title>
+    <title>Laravel Project @yield('title')</title>
 
 
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
+
+
+    <!-- Font-Awesome -->
+    <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css' integrity='sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w==' crossorigin='anonymous'/>
+
 
     <!-- Usando Vite -->
     @vite(['resources/js/app.js'])
@@ -22,12 +27,23 @@
 <body>
     <div id="app">
 
-
         @include('admin.partials.header')
 
-        <main class="">
-            @yield('content')
-        </main>
+        <div class="container-fluid main-wrapper">
+            <div class="row h-100">
+                @auth
+                    <div class="col-1 bg-dark">
+                        @include('admin.partials.aside')
+                    </div>
+                @endauth
+                <div class=" @auth col-11 @endauth ">
+                    <main class="h-100">
+                        @yield('content')
+                    </main>
+                </div>
+            </div>
+        </div>
+
     </div>
 </body>
 

@@ -1,1 +1,18 @@
-@import '~bootstrap/scss/bootstrap'
+@import '~bootstrap/scss/bootstrap';
+
+.main-wrapper {
+    height: calc(100vh - 57px);
+}
+
+ul{
+    list-style: none;
+}
+
+.mb-nav-link {
+    color: white;
+    text-decoration: none;
+    &:hover{
+        text-decoration: underline;
+        color: white;
+    }
+}
