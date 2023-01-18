@@ -4,9 +4,10 @@ namespace App\Http\Controllers\Admin; // <- se spostato a mano aggiungere Admin 
 
 use App\Http\Controllers\Controller; // <----- a aggiungere se il controller lo abbiamo spostato a mano
 
-use App\Http\Requests\StoreProjectRequest;
+use App\Http\Requests\ProjectRequest;
 use App\Http\Requests\UpdateProjectRequest;
 use App\Models\Project;
+use GuzzleHttp\Psr7\Request;
 
 class ProjectController extends Controller
 {
@@ -28,7 +29,7 @@ class ProjectController extends Controller
      */
     public function create()
     {
-        //
+        return view('admin.projects.create');
     }
 
     /**
@@ -37,10 +38,23 @@ class ProjectController extends Controller
      * @param  \App\Http\Requests\StoreProjectRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(StoreProjectRequest $request)
+    public function store(ProjectRequest $request)
     {
-        //
+        $form_data = $request->all();
+
+        $new_project = new Project();
+        //$new_project->name = $form_data['name'];
+        $new_project->slug = Project::generateSlug($form_data['name']);
+        //$new_project->cover_image = $form_data['cover_image'];
+        //$new_project->client_name = $form_data['client_name'];
+        //$new_project->summary = $form_data['summary'];
+        $new_project->fill($form_data);
+        $new_project->save();
+        //dd($new_project);
+
+        return redirect()->route('admin.projects.show', $new_project);
     }
+
 
     /**
      * Display the specified resource.
@@ -61,7 +75,7 @@ class ProjectController extends Controller
      */
     public function edit(Project $project)
     {
-        //
+        return view('admin.projects.edit', compact('project'));
     }
 
     /**
@@ -71,9 +85,19 @@ class ProjectController extends Controller
      * @param  \App\Models\Project  $project
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateProjectRequest $request, Project $project)
+    public function update(ProjectRequest $request, Project $project)
     {
-        //
+        $form_data = $request->all();
+
+        if($form_data['name'] != $project->name){
+            $form_data['slug'] = Project::generateSlug($form_data['name']);
+        }else{
+            $form_data['slug'] = $project->slug;
+        }
+
+        $project->update($form_data);
+
+        return redirect()->route('admin.projects.show', $project);
     }
 
     /**

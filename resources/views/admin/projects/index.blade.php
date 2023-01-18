@@ -6,8 +6,12 @@
 @endsection
 
 @section('content')
-<div class="container h-100 ">
+<div class="container h-100 d-flex flex-column justify-content-center">
     <h1 class="text-center my-5">Progetti</h1>
+    <div class="div d-flex justify-content-center">
+        <a class="btn btn-warning" href="{{route('admin.projects.create')}}">Create New Project</a>
+    </div>
+
     <div class="row d-flex">
         @forelse ($projects as $project)
         <div class="col-6 d-flex justify-content-center py-5">
@@ -15,8 +19,10 @@
                 <img src="{{$project->cover_image}}" class="card-img-top" alt="{{$project->name}}">
                 <div class="card-body">
                 <h3 class="card-title py-3 text-center">{{$project->name}}</h5>
+                <p class="card-text">{{$project->id}}</p>
                 <p class="card-text">{{$project->summary}}</p>
                 <a class="btn btn-primary" href="{{route('admin.projects.show', $project)}}" title="show">See Details >></a>
+                <a class="btn btn-success" href="{{route('admin.projects.edit', $project)}}" title="edit">Edit Project</a>
                 </div>
             </div>
         </div>

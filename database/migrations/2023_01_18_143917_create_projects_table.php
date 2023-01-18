@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('slug')->unique();
             $table->string('client_name');
             $table->text('summary');
-            $table->string('cover_image');
+            $table->string('cover_image')->default('https://i1.wp.com/potafiori.com/wp-content/uploads/2020/04/placeholder.png?ssl=1');
             $table->timestamps();
         });
     }

@@ -24,4 +24,5 @@ class Project extends Model
         return $slug;
         }
 
+        protected $fillable = ['name','cover_image','client_name','summary','slug'];
 }
