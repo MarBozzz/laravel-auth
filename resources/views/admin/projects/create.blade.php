@@ -19,7 +19,7 @@
         </div>
         @endif
 
-        <form action="{{route('admin.projects.store')}}" method="POST">
+        <form action="{{route('admin.projects.store')}}" method="POST" enctype="multipart/form-data">
             @csrf
 
             <div class="mb-3">
@@ -34,13 +34,18 @@
 
             <div class="mb-3">
                 <label for="cover_image" class="form-label">Image *</label>
-                <input type="text" class="form-control @error('cover_image') is-invalid @enderror" name="cover_image" id="cover_image"  value="{{old('cover_image')}}" placeholder="Insert URL image">
+                <input
+                onchange="showImage(event)"
+                type="file" class="form-control @error('cover_image') is-invalid @enderror" name="cover_image" id="cover_image"  value="{{old('cover_image')}}" placeholder="Insert image">
                 @error('cover_image')
                     <p  class="invalid-feedback">
                         {{$message}}
                     </p>
                 @enderror
+                <div class="image">
+                    <img id="output-image" width="150" src="" alt="">
                 </div>
+            </div>
 
             <div class="mb-3">
                 <label for="client_name" class="form-label">Client Name *</label>
@@ -54,11 +59,23 @@
 
             <div class="mb-3">
                 <label for="summary" class="form-label">Summary *</label>
-                <textarea class="form-control" name="summary" id="summary" rows="3">{{old('summary')}}
-                </textarea>
+                <textarea class="form-control @error('summary') is-invalid @enderror" name="summary" id="summary" rows="3">{{old('summary')}}</textarea>
+                @error('summary')
+                    <p  class="invalid-feedback">
+                        {{$message}}
+                    </p>
+                @enderror
 
             <button type="submit" class="btn btn-primary mb-5">Invia</button>
         </form>
     </div>
 </div>
+
+
+<script>
+    function showImage(event){
+        const tagImage = document.getElementById('output-image');
+        tagImage.src = URL.createObjectURL(event.target.files[0]);
+    }
+</script>
 @endsection

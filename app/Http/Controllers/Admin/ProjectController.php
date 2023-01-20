@@ -8,6 +8,7 @@ use App\Http\Requests\ProjectRequest;
 use App\Http\Requests\UpdateProjectRequest;
 use App\Models\Project;
 use GuzzleHttp\Psr7\Request;
+use Illuminate\Support\Facades\Storage;
 
 class ProjectController extends Controller
 {
@@ -41,18 +42,18 @@ class ProjectController extends Controller
     public function store(ProjectRequest $request)
     {
         $form_data = $request->all();
+        $form_data['slug'] = Project::generateSlug($form_data['name']);
 
-        $new_project = new Project();
-        //$new_project->name = $form_data['name'];
-        $new_project->slug = Project::generateSlug($form_data['name']);
-        //$new_project->cover_image = $form_data['cover_image'];
-        //$new_project->client_name = $form_data['client_name'];
-        //$new_project->summary = $form_data['summary'];
-        $new_project->fill($form_data);
-        $new_project->save();
-        //dd($new_project);
+        if(array_key_exists('cover_image',$form_data)){
+            $form_data['cover_image_original_name'] = $request->file('cover_image')->getClientOriginalName();
+            $form_data['cover_image'] = Storage::put('uploads',$form_data['cover_image']);
+        }
 
-        return redirect()->route('admin.projects.show', $new_project);
+        //dd($form_data);
+
+        $new_project = Project::create($form_data);
+
+        return redirect()->route('admin.projects.show', $new_project)->with('message','Project correctly created');
     }
 
 
@@ -95,9 +96,20 @@ class ProjectController extends Controller
             $form_data['slug'] = $project->slug;
         }
 
+        if(array_key_exists('cover_image',$form_data)){
+            if($project->cover_image){
+                Storage::disk('public')->delete($project->cover_image);
+            }
+
+            $form_data['cover_image_original_name'] = $request->file('cover_image')->getClientOriginalName();
+            $form_data['cover_image'] = Storage::put('uploads',$form_data['cover_image']);
+        }
+
+
+
         $project->update($form_data);
 
-        return redirect()->route('admin.projects.show', $project);
+        return redirect()->route('admin.projects.show', $project)->with('message','Project correctly edited');;
     }
 
     /**
@@ -108,6 +120,10 @@ class ProjectController extends Controller
      */
     public function destroy(Project $project)
     {
+        if($project->cover_image){
+            Storage::disk('public')->delete($project->cover_image);
+        }
+
         $project->delete();
 
         return redirect()->route('admin.projects.index')->with('deleted',"The Project $project->name has been correctly deleted");

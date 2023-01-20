@@ -15,11 +15,12 @@ return new class extends Migration
     {
         Schema::create('projects', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->string('slug')->unique();
-            $table->string('client_name');
+            $table->string('name',100);
+            $table->string('slug',110)->unique();
+            $table->string('client_name',100);
             $table->text('summary');
-            $table->string('cover_image')->default('https://i1.wp.com/potafiori.com/wp-content/uploads/2020/04/placeholder.png?ssl=1');
+            $table->string('cover_image')->nullable();
+            $table->string('cover_image_original_name')->nullable();
             $table->timestamps();
         });
     }
