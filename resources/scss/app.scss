@@ -20,3 +20,52 @@ img {
         color: white;
     }
 }
+
+.table-wrapper {
+    background-color: black;
+    color: white;
+    border-radius: 25px;
+}
+
+.table-wrapper {
+    .row{
+        nav{
+            width: 100%;
+            color: red;
+            ul{
+                color: red;
+                width: 100%;
+                display: flex;
+                justify-content: center;
+                li {
+                    .page-link {
+                        color: black;
+                        background-color: olivedrab;
+                        border: 2px solid black;
+                        border-radius: 5px;
+                    }
+                }
+                li.active {
+                    .page-link {
+                        color: black;
+                        background-color: white;
+                        transform: scale(1.1);
+                    }
+                }
+            }
+
+        }
+    }
+}
+
+.table tr th:nth-child(1) {
+    width: 20%;
+ }
+
+.table tr th:nth-child(2) {
+    width: 100%;
+ }
+
+ .table tr td:nth-child(2) {
+    text-transform: capitalize;
+ }
